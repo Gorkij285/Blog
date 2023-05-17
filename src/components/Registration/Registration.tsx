@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import styles from './Registration.module.scss'
-import { postProfile } from '../../store/profileSlice'
-import { StoreState } from '../../types/types'
-import { message } from 'antd'
+import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { message } from 'antd';
+
+import { postProfile } from '../../store/profileSlice';
+import { StoreState } from '../../types/types';
+
+import styles from './Registration.module.scss';
 
 const Registration = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const user: object = useSelector((state: StoreState) => state.profile.user)
-  const err: boolean | null = useSelector((state: StoreState) => state.profile.error)
-  const Logged: boolean = useSelector((state: StoreState) => state.profile.isLogged)
+  const Logged: boolean = useSelector((state: StoreState) => state.profile.isLogged);
 
   const [values, setValues] = useState({
     name: {
@@ -31,7 +31,7 @@ const Registration = () => {
       isActive: false,
     },
     checkbox: false,
-  })
+  });
 
   const newUser = {
     user: {
@@ -39,28 +39,36 @@ const Registration = () => {
       email: values.email.value,
       password: values.password.value,
     },
-  }
+  };
 
   const postProf = () => {
-    dispatch(postProfile(newUser) as any)
-    message.success('Profile created!')
-  }
+    const validates = validate(values);
+    if (Object.values(validates).length <= 1) {
+      dispatch(postProfile(newUser) as any).then((el: any) => {
+        if (el.payload) {
+          message.success('Profile created!');
+        } else {
+          message.error('incorrect data!');
+        }
+      });
+    }
+  };
 
   if (Logged) {
-    return <Navigate replace to="/" />
+    return <Navigate replace to="/" />;
   }
 
   const handleChange = (event: any) => {
-    const { value } = event.target
-    const id: string = event.target.id
+    const { value } = event.target;
+    const id: string = event.target.id;
     setValues({
       ...values,
       [id]: {
         value: value,
         isActive: true,
       },
-    })
-  }
+    });
+  };
 
   let validateObj = {
     name: '',
@@ -68,16 +76,14 @@ const Registration = () => {
     password: '',
     repeatPassword: '',
     checkbox: '',
-  }
+  };
 
-  if (err) {
-    validateObj = validate(values)
-  }
+  validateObj = validate(values);
 
-  const nameStyle = validateObj.name ? { border: '1px solid #F5222D' } : {}
-  const emailStyle = validateObj.email ? { border: '1px solid #F5222D' } : {}
-  const passwordStyle = validateObj.password ? { border: '1px solid #F5222D' } : {}
-  const repeatStyle = validateObj.repeatPassword ? { border: '1px solid #F5222D' } : {}
+  const nameStyle = validateObj.name ? { border: '1px solid #F5222D' } : {};
+  const emailStyle = validateObj.email ? { border: '1px solid #F5222D' } : {};
+  const passwordStyle = validateObj.password ? { border: '1px solid #F5222D' } : {};
+  const repeatStyle = validateObj.repeatPassword ? { border: '1px solid #F5222D' } : {};
 
   return (
     <div className={styles.registration}>
@@ -97,7 +103,13 @@ const Registration = () => {
         <span className={styles.validate}>{validateObj.password}</span>
 
         <label htmlFor="input">Repeat Password</label>
-        <input id="repeatPassword" type="password" placeholder="Repeat Password" onChange={handleChange} style={repeatStyle} />
+        <input
+          id="repeatPassword"
+          type="password"
+          placeholder="Repeat Password"
+          onChange={handleChange}
+          style={repeatStyle}
+        />
         <span className={styles.validate}>{validateObj.repeatPassword}</span>
 
         <div className={styles.checkbox}>
@@ -118,39 +130,39 @@ const Registration = () => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Registration
+export default Registration;
 
 const validate = (values: any) => {
-  const errors: any = {}
+  const errors: any = {};
 
   if (values.name.value.length < 1) {
-    errors.name = 'Required name'
+    errors.name = 'Required name';
   }
 
   if (!values.email.value) {
-    errors.email = 'Required email'
+    errors.email = 'Required email';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email.value) && values.email.isActive) {
-    errors.email = 'Invalid email address'
+    errors.email = 'Invalid email address';
   }
 
   if (!values.password.value && values.password.isActive) {
-    errors.password = 'Required password'
+    errors.password = 'Required password';
   } else if (values.password.value.length < 8 && values.password.isActive) {
-    errors.password = 'Password must be at least 8 characters'
+    errors.password = 'Password must be at least 8 characters';
   }
 
   if (!values.repeatPassword.value && values.repeatPassword.isActive) {
-    errors.repeatPassword = 'Required repeatPassword'
+    errors.repeatPassword = 'Required repeatPassword';
   } else if (values.repeatPassword.value !== values.password.value && values.password.isActive) {
-    errors.repeatPassword = 'Passwords do not match'
+    errors.repeatPassword = 'Passwords do not match';
   }
 
-  if (!values.checkbox) {
-    errors.checkbox = 'You must agree.'
+  if (values.checkbox) {
+    errors.checkbox = 'You must agree.';
   }
 
-  return errors
-}
+  return errors;
+};

@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Control, useFieldArray, useForm, useWatch } from 'react-hook-form'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { BeatLoader } from 'react-spinners'
-import stylesButton from '../Header/Header.module.scss'
-import styles from '../Registration/Registration.module.scss'
-import stylesTwo from './CreatingArticle.module.scss'
-import { message } from 'antd'
-import { FormValues } from '../../types/types'
-import { fetchCreatePost } from '../../store/articleSlice'
-import { update } from '../../store/profileSlice'
+import React, { useEffect, useState } from 'react';
+import { Control, useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
+import { message } from 'antd';
+
+import styles from '../Registration/Registration.module.scss';
+import stylesButton from '../Header/Header.module.scss';
+import { FormValues } from '../../types/types';
+import { fetchCreatePost } from '../../store/articleSlice';
+import { update } from '../../store/profileSlice';
+
+import stylesTwo from './CreatingArticle.module.scss';
 
 const CreatingArticle = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     title: {
-      value: ``,
+      value: '',
       isActive: false,
     },
     shortDescription: {
-      value: ``,
+      value: '',
       isActive: false,
     },
     text: {
-      value: ``,
+      value: '',
       isActive: false,
     },
     tags: [],
-  })
+  });
 
   const {
     register,
@@ -39,18 +41,18 @@ const CreatingArticle = () => {
     defaultValues: {
       cart: [{ name: '' }],
     },
-  })
+  });
 
   function TotalAmout({ control }: { control: Control<FormValues> }) {
     const cartValues = useWatch({
       control,
       name: 'cart',
-    })
-    return cartValues
+    });
+    return cartValues;
   }
   const tagsList = TotalAmout({ control })
     .map((obj) => obj.name)
-    .filter((str) => str !== '')
+    .filter((str) => str !== '');
 
   const { fields, append, remove } = useFieldArray({
     name: 'cart',
@@ -58,7 +60,9 @@ const CreatingArticle = () => {
     rules: {
       required: 'Please append at least 1 item',
     },
-  })
+  });
+
+  const validateObj = validate(values);
 
   const addArticle = () => {
     const arr = {
@@ -66,45 +70,44 @@ const CreatingArticle = () => {
       description: values.shortDescription.value,
       body: values.text.value,
       tagList: tagsList,
-    }
-    let bool = true
+    };
+    let bool = true;
     function hasEmptyKeys(arr: any) {
-      for (var key in arr) {
-        if (arr.hasOwnProperty(key) && arr[key] === '' && key !== 'tagList') {
-          bool = false
+      if (arr) {
+        for (const key in arr) {
+          if (Object.prototype.hasOwnProperty.call(arr, key) && arr[key] === '' && key !== 'tagList') {
+            bool = false;
+          }
         }
       }
     }
-    hasEmptyKeys(arr)
+    hasEmptyKeys(arr);
     if (bool) {
       const updatePostAndNavigate = async () => {
-        try {
-          await dispatch(fetchCreatePost(arr) as any)
-          dispatch(update())
-          navigate('/')
-          message.success('Article create!')
-        } catch (error) {
-          console.error(error)
-          message.error('Failed to create article.')
-        }
-      }
-      updatePostAndNavigate()
+          if (Object.values(validateObj).length < 1){
+            await dispatch(fetchCreatePost(arr) as any);
+            dispatch(update());
+            navigate('/');
+            message.success('Article create!');
+          } else {
+            message.error('Failed to create article.')
+          }
+      };
+      updatePostAndNavigate();
     }
-  }
+  };
 
   const handleChange = (event: any) => {
-    const { value } = event.target
-    const id: string = event.target.id
+    const { value } = event.target;
+    const id: string = event.target.id;
     setValues({
       ...values,
       [id]: {
         value: value,
         isActive: true,
       },
-    })
-  }
-
-  const validateObj = validate(values)
+    });
+  };
 
   return (
     <div className={`${styles.registration} ${stylesTwo.registration}`}>
@@ -116,7 +119,13 @@ const CreatingArticle = () => {
         <span className={styles.validate}>{validateObj.name}</span>
 
         <label htmlFor="input">Short description</label>
-        <input className={stylesTwo.title} onChange={handleChange} id="shortDescription" type="text" placeholder="Short description" />
+        <input
+          className={stylesTwo.title}
+          onChange={handleChange}
+          id="shortDescription"
+          type="text"
+          placeholder="Short description"
+        />
         <span className={styles.validate}>{validateObj.shortDescription}</span>
 
         <label htmlFor="input">Text</label>
@@ -132,11 +141,15 @@ const CreatingArticle = () => {
                     <span>Tags</span>
                     <input {...register(`cart.${index}.name`, { required: true })} />
                   </label>
-                  <button className={`${stylesTwo.delete} ${stylesButton.headerButton}`} type="button" onClick={() => remove(index)}>
+                  <button
+                    className={`${stylesTwo.delete} ${stylesButton.headerButton}`}
+                    type="button"
+                    onClick={() => remove(index)}
+                  >
                     Delete
                   </button>
                 </section>
-              )
+              );
             })}
           </div>
           <div className={stylesTwo.addTagWrapper}>
@@ -146,7 +159,7 @@ const CreatingArticle = () => {
               onClick={() => {
                 append({
                   name: '',
-                })
+                });
               }}
             >
               Add tag
@@ -158,25 +171,25 @@ const CreatingArticle = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreatingArticle
+export default CreatingArticle;
 
 const validate = (values: any) => {
-  const errors: any = {}
+  const errors: any = {};
 
-  if (values.title.value.length < 1) {
-    errors.name = 'must be filled in'
+  if (values.title.value.length < 3) {
+    errors.name = 'must consist of at least 3 characters';
   }
 
-  if (values.shortDescription.value.length < 1) {
-    errors.shortDescription = 'must be filled in'
+  if (values.shortDescription.value.length < 3) {
+    errors.shortDescription = 'must consist of at least 3 characters';
   }
 
-  if (values.text.value.length < 1) {
-    errors.text = 'must be filled in'
+  if (values.text.value.length < 3) {
+    errors.text = 'must consist of at least 3 characters';
   }
 
-  return errors
-}
+  return errors;
+};

@@ -1,25 +1,27 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import styles from './Header.module.scss'
-import { StoreState, User } from '../../types/types'
-import { fetchUser } from '../../store/profileSlice'
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { StoreState, User } from '../../types/types';
+import { fetchUser } from '../../store/profileSlice';
+
+import styles from './Header.module.scss';
 
 const Header = () => {
-  const token: string = useSelector((state: StoreState) => state.profile.user.token)
-  const user: User = useSelector((state: StoreState) => state.profile.user)
+  const token: string = useSelector((state: StoreState) => state.profile.user.token);
+  const user: User = useSelector((state: StoreState) => state.profile.user);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const getToken = () => {
-    dispatch(fetchUser() as any)
-  }
+    dispatch(fetchUser() as any);
+  };
 
   useEffect(() => {
-    getToken()
-  }, [])
+    getToken();
+  }, []);
 
-  const avatar = user.image ? user.image : 'https://f1academy.com.my/wp-content/uploads/2020/09/Profile-2-02.png'
+  const avatar = user.image ? user.image : 'https://f1academy.com.my/wp-content/uploads/2020/09/Profile-2-02.png';
 
   if (token) {
     return (
@@ -47,7 +49,7 @@ const Header = () => {
           </Link>
         </div>
       </header>
-    )
+    );
   }
   return (
     <header className={styles.header}>
@@ -66,12 +68,12 @@ const Header = () => {
         </Link>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 function clearLocalStorage() {
-  localStorage.clear()
-  window.location.reload()
+  localStorage.clear();
+  window.location.reload();
 }

@@ -1,33 +1,36 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-import { UpdatePostDataType, CreatePostDataType } from '../types/types'
+import { UpdatePostDataType, CreatePostDataType } from '../types/types';
 
 interface InitialStateType {
   article: {
-    title: string
-    description: string
-    body: string
-    tagList?: string[]
-  }
-  loading: boolean
+    title: string;
+    description: string;
+    body: string;
+    tagList?: string[];
+  };
+  loading: boolean;
 }
 
-export const fetchCreatePost = createAsyncThunk('singleArticle/fetchCreatePost', async (authData: CreatePostDataType) => {
-  const response = await axios.post(
-    'https://blog.kata.academy/api/articles',
-    {
-      article: authData,
-    },
-    {
-      headers: {
-        Authorization: `Token ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json',
+export const fetchCreatePost = createAsyncThunk(
+  'singleArticle/fetchCreatePost',
+  async (authData: CreatePostDataType) => {
+    const response = await axios.post(
+      'https://blog.kata.academy/api/articles',
+      {
+        article: authData,
       },
-    }
-  )
-  return response.data
-})
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  }
+);
 
 export const fetchDeletePost = createAsyncThunk('singleArticle/fetchDeletepost', async (slug: string) => {
   const response = await axios.delete(`https://blog.kata.academy/api/articles/${slug}`, {
@@ -35,25 +38,28 @@ export const fetchDeletePost = createAsyncThunk('singleArticle/fetchDeletepost',
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
-  })
-  return response.data
-})
+  });
+  return response.data;
+});
 
-export const fetchUpdatePost = createAsyncThunk('singleArticle/fetchUpdatePost', async (authData: UpdatePostDataType) => {
-  const response = await axios.put(
-    `https://blog.kata.academy/api/articles/${authData.slug}`,
-    {
-      article: authData.updateData,
-    },
-    {
-      headers: {
-        Authorization: `Token ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json',
+export const fetchUpdatePost = createAsyncThunk(
+  'singleArticle/fetchUpdatePost',
+  async (authData: UpdatePostDataType) => {
+    const response = await axios.put(
+      `https://blog.kata.academy/api/articles/${authData.slug}`,
+      {
+        article: authData.updateData,
       },
-    }
-  )
-  return response.data
-})
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  }
+);
 
 export const fetchSetLike = createAsyncThunk('singleArticle/fetchSetLike', async (slug: string) => {
   const response = await axios.post(
@@ -68,9 +74,9 @@ export const fetchSetLike = createAsyncThunk('singleArticle/fetchSetLike', async
         'Content-Type': 'application/json',
       },
     }
-  )
-  return response.data
-})
+  );
+  return response.data;
+});
 
 export const fetchRemoveLike = createAsyncThunk('singleArticle/fetchRemoveLike', async (slug: string) => {
   const response = await axios.delete(`https://blog.kata.academy/api/articles/${slug}/favorite`, {
@@ -78,9 +84,9 @@ export const fetchRemoveLike = createAsyncThunk('singleArticle/fetchRemoveLike',
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
-  })
-  return response.data
-})
+  });
+  return response.data;
+});
 
 const initialState: InitialStateType = {
   article: {
@@ -90,27 +96,27 @@ const initialState: InitialStateType = {
     tagList: ['a', 'a'],
   },
   loading: false,
-}
+};
 
 const singleArticleSlice = createSlice({
   name: 'singleArticle',
   initialState,
   reducers: {
     setCurrentPage(state) {
-      state.article.title = 'sd'
+      state.article.title = 'sd';
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCreatePost.pending, (state) => {
-      state.loading = true
-    })
+      state.loading = true;
+    });
     builder.addCase(fetchCreatePost.fulfilled, (state) => {
-      state.loading = false
-    })
+      state.loading = false;
+    });
     builder.addCase(fetchSetLike.fulfilled, (state) => {
-      state.loading = false
-    })
+      state.loading = false;
+    });
   },
-})
+});
 
-export default singleArticleSlice.reducer
+export default singleArticleSlice.reducer;

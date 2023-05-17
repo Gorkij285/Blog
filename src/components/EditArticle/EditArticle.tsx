@@ -1,54 +1,56 @@
-import React, { useEffect } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { message } from 'antd'
-import { fetchUpdatePost } from '../../store/articleSlice'
-import { fetchSoloArticle } from '../../store/postSlice'
-import type { UpdatePostDataType, StoreState } from '../../types/types'
-import { update } from '../../store/profileSlice'
-import classes from './EditArticle.module.scss'
+import React, { useEffect } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { message } from 'antd';
+
+import { fetchUpdatePost } from '../../store/articleSlice';
+import { fetchSoloArticle } from '../../store/postSlice';
+import type { UpdatePostDataType, StoreState } from '../../types/types';
+import { update } from '../../store/profileSlice';
+
+import classes from './EditArticle.module.scss';
 
 type FormValues = {
-  title: string
-  description: string
-  body: string | number
-  tags: { tag: string }[]
-}
+  title: string;
+  description: string;
+  body: string | number;
+  tags: { tag: string }[];
+};
 
 const EditArticle = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const currentArticle = useSelector((state: StoreState) => state.soloArticle.currentArticle)
-  const post = JSON.parse(sessionStorage.getItem('post') as any)
-  console.log(post, currentArticle)
+  const currentArticle = useSelector((state: StoreState) => state.soloArticle.currentArticle);
+  const post = JSON.parse(sessionStorage.getItem('post') as any);
+  console.log(post, currentArticle);
 
-  const id = useParams().id
+  const id = useParams().id;
 
   useEffect(() => {
     async function asFunc(id: string) {
-      await dispatch(fetchSoloArticle(id) as any)
-      console.log('запрос прошел', id)
+      await dispatch(fetchSoloArticle(id) as any);
+      console.log('запрос прошел', id);
     }
-    if (id) asFunc(id)
+    if (id) asFunc(id);
 
     return () => {
-      window.sessionStorage.removeItem('post')
-    }
-  }, [id])
+      window.sessionStorage.removeItem('post');
+    };
+  }, [id]);
 
-  const tags = post.tagList
+  const tags = post.tagList;
   const tagsForUpdate = tags?.map((tag: string) => {
-    return { tag: tag }
-  })
+    return { tag: tag };
+  });
 
   const defaultValues = {
     title: post.title,
     description: post.description,
     body: post.body,
     tags: tagsForUpdate,
-  }
+  };
 
   const {
     register,
@@ -58,18 +60,18 @@ const EditArticle = () => {
     reset,
   } = useForm<FormValues>({
     defaultValues,
-  })
+  });
 
   const { fields, append, remove } = useFieldArray<FormValues>({
     name: 'tags',
     control,
-  })
+  });
 
   const onSubmit = handleSubmit((data) => {
-    const { body, description, title, tags } = data
+    const { body, description, title, tags } = data;
     const tagArr = tags.map((tagObj) => {
-      return tagObj.tag
-    })
+      return tagObj.tag;
+    });
     const authData: UpdatePostDataType = {
       updateData: {
         title: title,
@@ -78,21 +80,21 @@ const EditArticle = () => {
         tagList: tagArr,
       },
       slug: id,
-    }
+    };
 
     async function updatePostAndNavigate() {
       try {
-        await dispatch(fetchUpdatePost(authData) as any)
-        navigate('/')
-        dispatch(update())
-        message.success('Article updated!')
+        await dispatch(fetchUpdatePost(authData) as any);
+        navigate('/');
+        dispatch(update());
+        message.success('Article updated!');
       } catch (error) {
-        console.error(error)
-        message.error('Failed to update article.')
+        console.error(error);
+        message.error('Failed to update article.');
       }
     }
-    updatePostAndNavigate()
-  })
+    updatePostAndNavigate();
+  });
 
   return (
     <div className={classes.wrapper}>
@@ -185,7 +187,7 @@ const EditArticle = () => {
                     Delete
                   </button>
                 </li>
-              )
+              );
             })}
           </ul>
 
@@ -197,7 +199,7 @@ const EditArticle = () => {
         <button className={classes.submit_btn}>Send</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditArticle
+export default EditArticle;

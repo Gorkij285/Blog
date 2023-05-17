@@ -1,36 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import styles from './Post.module.scss'
-import { PostData } from '../../types/types'
-import { fetchSetLike, fetchRemoveLike } from '../../store/articleSlice'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const Post: React.FC<PostData> = ({ author, title, createdAt, tagList, slug, description, favoritesCount, favorited, element }) => {
-  const newLink = `/articles/${slug}`
+import { fetchSetLike, fetchRemoveLike } from '../../store/articleSlice';
+import { PostData, StoreState } from '../../types/types';
 
-  const dispatch = useDispatch()
+import styles from './Post.module.scss';
 
-  let defaultStylesLike = favorited ? `${styles.love} ${styles.loved}` : `${styles.love}`
+const Post: React.FC<PostData> = ({
+  author,
+  title,
+  createdAt,
+  tagList,
+  slug,
+  description,
+  favoritesCount,
+  favorited,
+  element,
+}) => {
+  const newLink = `/articles/${slug}`;
 
-  const [appreciated, setAppreciated] = useState(favorited)
-  const [count, setCount] = useState(Number(favoritesCount))
-  const [stylesLike, setStylesLike] = useState(defaultStylesLike)
+  const dispatch = useDispatch();
+
+  const defaultStylesLike = favorited ? `${styles.love} ${styles.loved}` : `${styles.love}`;
+
+  const [appreciated, setAppreciated] = useState(favorited);
+  const [count, setCount] = useState(Number(favoritesCount));
+  const [stylesLike, setStylesLike] = useState(defaultStylesLike);
+  const Logged: boolean = useSelector((state: StoreState) => state.profile.isLogged);
 
   const Like = async () => {
-    if (element.slug) {
+    if (element.slug && (Logged || localStorage.getItem('token'))) {
       if (appreciated) {
-        await dispatch(fetchRemoveLike(element.slug) as any)
-        setStylesLike(`${styles.love}`)
-        setCount((c) => c - 1)
-        setAppreciated(!appreciated)
+        await dispatch(fetchRemoveLike(element.slug) as any);
+        setStylesLike(`${styles.love}`);
+        setCount((c) => c - 1);
+        setAppreciated(!appreciated);
       } else {
-        await dispatch(fetchSetLike(element.slug) as any)
-        setStylesLike(`${styles.love} ${styles.loved}`)
-        setCount((c) => c + 1)
-        setAppreciated(!appreciated)
+        await dispatch(fetchSetLike(element.slug) as any);
+        setStylesLike(`${styles.love} ${styles.loved}`);
+        setCount((c) => c + 1);
+        setAppreciated(!appreciated);
       }
     }
-  }
+  };
 
   return (
     <div className={styles.post}>
@@ -49,7 +62,7 @@ const Post: React.FC<PostData> = ({ author, title, createdAt, tagList, slug, des
             <button className={styles.tag} key={i}>
               {el}
             </button>
-          )
+          );
         })}
         <span>{description}</span>
       </div>
@@ -61,17 +74,17 @@ const Post: React.FC<PostData> = ({ author, title, createdAt, tagList, slug, des
         <img src={author.image}></img>
       </div>
     </div>
-  )
-}
+  );
+};
 
 function formatDate(dateString: string): string {
-  const date = new Date(dateString)
+  const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
-  }
-  return date.toLocaleDateString('en-US', options)
+  };
+  return date.toLocaleDateString('en-US', options);
 }
 
-export default Post
+export default Post;
