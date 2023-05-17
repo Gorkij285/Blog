@@ -1,0 +1,78 @@
+.header {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 22px 13px 22px;
+  height: 80px;
+  margin-bottom: 26px;
+}
+
+.headerButton {
+  padding: 10px;
+  border: 0px solid transparent;
+  border-radius: 5px;
+  border-color: #00bcd4;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.headerButton:hover {
+  background-color: #00bcd4;
+  color: #fff;
+}
+
+.signUp {
+  border: 1px solid transparent;
+  border-color: #52c41a;
+  margin-left: 10px;
+}
+
+.signUp:hover {
+  background-color: #52c41a;
+  color: #fff;
+}
+
+.logOut {
+  border: 1px solid transparent;
+  border-color: #000000;
+  margin-left: 10px;
+}
+
+.logOut:hover {
+  background-color: #d70b0b;
+  color: #fff;
+  border-color: #d70b0b;
+}
+
+.profile {
+  display: inline-flex;
+  margin-left: 10px;
+}
+
+.img {
+  height: 46px;
+  width: 46px;
+  position: absolute;
+  top: -2px;
+  right: 89px;
+  border-radius: 100%;
+}
+
+.right {
+  position: relative;
+  text-decoration: none;
+}
+
+.right:hover {
+  cursor: pointer;
+}
+
+.pName {
+  margin-right: 60px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 400;
+  font-size: 18px;
+}

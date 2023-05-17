@@ -1,0 +1,55 @@
+.box {
+  width: 938px;
+  min-height: 400px;
+  height: auto;
+}
+.title {
+  width: 100%;
+  border: 1px solid rgb(217, 217, 217);
+}
+.title:nth-child(9) {
+  width: 100%;
+  min-height: 168px;
+  resize: none;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  padding-left: 12px;
+  padding-top: 10px;
+}
+
+.registration {
+  height: auto;
+}
+.button {
+  margin-top: 20px;
+  width: 334px;
+  height: 40px;
+}
+.tagsBox {
+  display: flex;
+  flex-direction: row;
+}
+.addTag {
+  width: 136px;
+  height: 40px;
+  margin-left: 10px;
+  border: 1px solid transparent;
+  border-color: #1890ff;
+}
+.addTagWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.delete {
+  width: 136px;
+  height: 40px;
+  margin-left: 10px;
+  border: 1px solid transparent;
+  border-color: #d70b0b;
+  color: #d70b0b;
+}
+.delete:hover {
+  background-color: #d70b0b;
+  color: #fff;
+  border-color: #d70b0b;
+}
