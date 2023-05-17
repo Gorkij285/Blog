@@ -1,2 +1,1 @@
-[# Blog](https://blog-gorkij285.vercel
-.app/)
+https://blog-gorkij285.vercel.app/
