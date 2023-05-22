@@ -54,7 +54,7 @@ const CreatingArticle = () => {
     .map((obj) => obj.name)
     .filter((str) => str !== '');
 
-  const { fields, append, remove } = useFieldArray({
+  let { fields, append, remove } = useFieldArray({
     name: 'cart',
     control,
     rules: {
@@ -82,7 +82,13 @@ const CreatingArticle = () => {
       }
     }
     hasEmptyKeys(arr);
-    if (bool) {
+
+    const masTags = fields.map(field => field.name)
+    
+    if(masTags.includes('')){
+      message.error('tags cannot be empty!')
+    } else {
+      if (bool) {
       const updatePostAndNavigate = async () => {
           if (Object.values(validateObj).length < 1){
             await dispatch(fetchCreatePost(arr) as any);
@@ -95,6 +101,7 @@ const CreatingArticle = () => {
       };
       updatePostAndNavigate();
     }
+    } 
   };
 
   const handleChange = (event: any) => {
@@ -103,10 +110,17 @@ const CreatingArticle = () => {
     setValues({
       ...values,
       [id]: {
-        value: value,
+        value: value.trim(),
         isActive: true,
       },
     });
+  };
+
+  const handleInputChange = (event:any, index:any) => {
+    const { name, value } = event.target;
+    const updatedFields = [...fields];
+    updatedFields[index].name = value;
+    fields = updatedFields
   };
 
   return (
@@ -139,7 +153,10 @@ const CreatingArticle = () => {
                 <section key={field.id}>
                   <label>
                     <span>Tags</span>
-                    <input {...register(`cart.${index}.name`, { required: true })} />
+                    <input 
+                      {...register(`cart.${index}.name`, { required: true })}
+                      onChange={(event) => handleInputChange(event, index)}
+                     />
                   </label>
                   <button
                     className={`${stylesTwo.delete} ${stylesButton.headerButton}`}
@@ -156,7 +173,7 @@ const CreatingArticle = () => {
             <button
               className={`${stylesTwo.addTag} ${stylesButton.headerButton}`}
               type="button"
-              onClick={() => {
+              onClick={(el) => {
                 append({
                   name: '',
                 });
@@ -179,15 +196,15 @@ export default CreatingArticle;
 const validate = (values: any) => {
   const errors: any = {};
 
-  if (values.title.value.length < 3) {
+  if (values.title.value.trim().length < 3) {
     errors.name = 'must consist of at least 3 characters';
   }
 
-  if (values.shortDescription.value.length < 3) {
+  if (values.shortDescription.value.trim().length < 3) {
     errors.shortDescription = 'must consist of at least 3 characters';
   }
 
-  if (values.text.value.length < 3) {
+  if (values.text.value.trim().length < 3) {
     errors.text = 'must consist of at least 3 characters';
   }
 

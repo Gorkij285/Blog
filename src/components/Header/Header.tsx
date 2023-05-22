@@ -21,21 +21,26 @@ const Header = () => {
     getToken();
   }, []);
 
+  const goToOne = () => {
+    sessionStorage.removeItem('page');
+    const updateCounter: number = useSelector((state: StoreState) => state.profile.updateCounter);
+  }
+
   const avatar = user.image ? user.image : 'https://f1academy.com.my/wp-content/uploads/2020/09/Profile-2-02.png';
 
   if (token) {
     return (
       <header className={styles.header}>
         <div className="left">
-          <Link style={{ textDecoration: 'none' }} to="/">
-            <button className={styles.headerButton}>Blog</button>
+          <Link style={{ textDecoration: 'none' }} onClick={goToOne} to="/">
+            <button className={styles.headerButton} >Blog</button>
           </Link>
         </div>
 
         <div className={styles.right}>
-          <Link to="/new-article">
-            <button className={`${styles.headerButton} ${styles.signUp}`}>Create article</button>
-          </Link>
+          <button className={`${styles.headerButton} ${styles.signUp}`}>
+            <Link to="/new-article">Create article</Link>
+          </button>
           <Link to="/profile" style={{ textDecoration: 'none' }}>
             <div className={styles.profile}>
               <p className={styles.pName}>{user.username}</p>
@@ -54,7 +59,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className="left">
-        <Link style={{ textDecoration: 'none' }} to="/">
+        <Link style={{}} onClick={goToOne} to="/">
           <button className={styles.headerButton}>Blog</button>
         </Link>
       </div>

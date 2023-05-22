@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { fetchList } from './store/listSlice';
 import { StoreState } from './types/types';
@@ -23,7 +23,6 @@ function App() {
 
   useEffect(() => {
     const pages = page <= 1 ? 0 : (page - 1) * 5;
-    console.log(pages);
     dispatch(fetchList(pages) as any);
   }, [page, updateCounter]);
 

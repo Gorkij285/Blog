@@ -17,6 +17,7 @@
   color: #333;
   background-color: #fff;
   transition: all 0.3s ease;
+  text-decoration: none
 }
 
 .headerButton:hover {
@@ -75,4 +76,8 @@
   color: rgba(0, 0, 0, 0.85);
   font-weight: 400;
   font-size: 18px;
+}
+a{
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.85);
 }

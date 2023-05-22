@@ -9,6 +9,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
 
   const handlePageChange = (page: number) => {
+    sessionStorage.setItem('page', String(page));
     dispatch(togglePage(page));
   };
 
@@ -20,7 +21,7 @@ const Navigation = () => {
 
   return (
     <Pagination
-      current={page}
+      current={Number(sessionStorage.getItem('page'))}
       total={limit}
       showSizeChanger={false}
       onChange={(page) => handlePageChange(page)}

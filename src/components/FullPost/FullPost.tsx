@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Popconfirm, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
+import Markdown from 'react-markdown';
 
 import { StoreState } from '../../types/types';
 import { fetchDeletePost, fetchSetLike, fetchRemoveLike } from '../../store/articleSlice';
@@ -93,8 +94,9 @@ const FullPost = () => {
                 </button>
               );
             })}
-            <span>{description}</span>
-            <span className={stylesTwo.description}>{body}</span>
+            <span className={stylesTwo.description}>
+              <Markdown className={stylesTwo.description}>{body}</Markdown>
+            </span>
           </div>
           <div className={styles.right}>
             <div>
