@@ -1,1 +1,1 @@
-https://my-blog-pi-orpin.vercel.app/
+https://blog-fixed-uxpv-o12d5hlc9-gorkij285.vercel.app/
