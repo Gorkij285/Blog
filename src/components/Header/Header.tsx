@@ -10,7 +10,7 @@ import styles from './Header.module.scss';
 const Header = () => {
   const token: string = useSelector((state: StoreState) => state.profile.user.token);
   const user: User = useSelector((state: StoreState) => state.profile.user);
-
+  
   const dispatch = useDispatch();
 
   const getToken = () => {
@@ -23,8 +23,7 @@ const Header = () => {
 
   const goToOne = () => {
     sessionStorage.removeItem('page');
-    const updateCounter: number = useSelector((state: StoreState) => state.profile.updateCounter);
-  }
+  };
 
   const avatar = user.image ? user.image : 'https://f1academy.com.my/wp-content/uploads/2020/09/Profile-2-02.png';
 
@@ -33,7 +32,7 @@ const Header = () => {
       <header className={styles.header}>
         <div className="left">
           <Link style={{ textDecoration: 'none' }} onClick={goToOne} to="/">
-            <button className={styles.headerButton} >Blog</button>
+            <button className={styles.headerButton}>Blog</button>
           </Link>
         </div>
 

@@ -83,25 +83,25 @@ const CreatingArticle = () => {
     }
     hasEmptyKeys(arr);
 
-    const masTags = fields.map(field => field.name)
-    
-    if(masTags.includes('')){
-      message.error('tags cannot be empty!')
+    const masTags = fields.map((field) => field.name);
+
+    if (masTags.includes('')) {
+      message.error('tags cannot be empty!');
     } else {
       if (bool) {
-      const updatePostAndNavigate = async () => {
-          if (Object.values(validateObj).length < 1){
+        const updatePostAndNavigate = async () => {
+          if (Object.values(validateObj).length < 1) {
             await dispatch(fetchCreatePost(arr) as any);
             dispatch(update());
             navigate('/');
             message.success('Article create!');
           } else {
-            message.error('Failed to create article.')
+            message.error('Failed to create article.');
           }
-      };
-      updatePostAndNavigate();
+        };
+        updatePostAndNavigate();
+      }
     }
-    } 
   };
 
   const handleChange = (event: any) => {
@@ -116,11 +116,11 @@ const CreatingArticle = () => {
     });
   };
 
-  const handleInputChange = (event:any, index:any) => {
+  const handleInputChange = (event: any, index: any) => {
     const { name, value } = event.target;
     const updatedFields = [...fields];
     updatedFields[index].name = value;
-    fields = updatedFields
+    fields = updatedFields;
   };
 
   return (
@@ -153,10 +153,10 @@ const CreatingArticle = () => {
                 <section key={field.id}>
                   <label>
                     <span>Tags</span>
-                    <input 
+                    <input
                       {...register(`cart.${index}.name`, { required: true })}
                       onChange={(event) => handleInputChange(event, index)}
-                     />
+                    />
                   </label>
                   <button
                     className={`${stylesTwo.delete} ${stylesButton.headerButton}`}

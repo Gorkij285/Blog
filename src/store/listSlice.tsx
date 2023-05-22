@@ -5,10 +5,10 @@ import { ListState } from '../types/types';
 
 export const fetchList = createAsyncThunk('listInfo/fetchList', async (page: number, { rejectWithValue }) => {
   try {
-    let pages = (Number(sessionStorage.getItem('page')) * 5) - 5
-    if(pages < 0){
+    let pages = Number(sessionStorage.getItem('page')) * 5 - 5;
+    if (pages < 0) {
       pages = 0;
-      sessionStorage.setItem('page', '1')
+      sessionStorage.setItem('page', '1');
     }
     const res = await axios
       .get(`https://blog.kata.academy/api/articles?limit=5&offset=${pages}`, {

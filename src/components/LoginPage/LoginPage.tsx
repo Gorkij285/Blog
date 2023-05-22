@@ -77,7 +77,13 @@ const LoginPage = () => {
         <span className={styles.validate}>{validateObj.email}</span>
 
         <label htmlFor="input">Password</label>
-        <input className={stylesTwo.input} id="password" type="password" placeholder="Password" onChange={handleChange} />
+        <input
+          className={stylesTwo.input}
+          id="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
 
         <span className={styles.validate}>{validateObj.message}</span>
 

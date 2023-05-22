@@ -45,11 +45,9 @@ const Post: React.FC<PostData> = ({
     }
   };
 
-
-  const setTagList = tagList.filter((value:string, index:number, self:any) => {
+  const setTagList = tagList.filter((value: string, index: number, self: any) => {
     return self.indexOf(value) === index;
   });
-
 
   return (
     <div className={styles.post}>
@@ -64,8 +62,8 @@ const Post: React.FC<PostData> = ({
         </div>
 
         {setTagList.map((el, i) => {
-          if(setTagList[0]){
-            if(el.trim().length > 0){
+          if (setTagList[0]) {
+            if (el.trim().length > 0) {
               return (
                 <button className={styles.tag} key={i}>
                   {el}
@@ -73,7 +71,6 @@ const Post: React.FC<PostData> = ({
               );
             }
           }
-          
         })}
         <span>{description}</span>
       </div>
